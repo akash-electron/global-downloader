@@ -1,0 +1,20 @@
+app = "global-downloader-api"
+primary_region = "sin"
+
+[build]
+  dockerfile = "deployments/docker/Dockerfile"
+
+[env]
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  memory_mb = 512
+  cpu_kind = "shared"
+  cpus = 1

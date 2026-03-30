@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  downloader:
+    build:
+      context: ../../
+      dockerfile: deployments/docker/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - downloads:/app/downloads
+    environment:
+      PORT: "8080"
+      DOWNLOAD_DIR: "/app/downloads"
+      MAX_WORKERS: "4"
+      MAX_QUEUE_SIZE: "100"
+      YTDLP_PATH: "yt-dlp"
+      FFMPEG_PATH: "ffmpeg"
+      MAX_FILE_AGE_MINS: "60"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  downloads:
